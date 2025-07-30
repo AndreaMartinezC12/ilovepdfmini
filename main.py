@@ -14,17 +14,18 @@ class PDFApp:
         ttk.Button(root, text="+ agregar pdf", command=self.select_pdfs).pack(pady=10)
         ttk.Button(root, text="unir pdf", command=self.merge_pdfs).pack(pady=10)
         ttk.Button(root, text="dividir pdf", command=self.split_pdf).pack(pady=10)
+        self.listbox = tk.Listbox(root, width=80, height=15)
+        self.listbox.pack(pady=10)
         #ttk.Button(root, text="- comprimir pdf", command=self.compress_pdfs).pack(pady=10)
+
 
     def select_pdfs(self):
         files = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf")])
         self.pdf_files= list(files)
         messagebox.showinfo("Seleccionados",f"{len(files)} archivos seleccionados")
 
-        items_var = tk.StringVar(value=self.pdf_files)
-        print(items_var)
-        listbox = tk.Listbox(root, listvariable=items_var, width=80, height=15)
-        listbox.pack()
+        for i in range(0, (len(self.pdf_files))):
+            self.listbox.insert(tk.END, self.pdf_files[i])
     
     def merge_pdfs(self):
         if len(self.pdf_files)<2:
