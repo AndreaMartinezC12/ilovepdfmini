@@ -15,6 +15,7 @@ class PDFApp:
         ttk.Button(root, text="unir pdf", command=self.merge_pdfs).pack(pady=10)
         ttk.Button(root, text="dividir pdf", command=self.split_pdf).pack(pady=10)
         ttk.Button(root, text="dividir pdf por paginas", command=self.split_pdf_perpage).pack(pady=10)
+        ttk.Button(root, text="clear pdf selection", command=self.clear_files).pack(pady=10)
         self.listbox = tk.Listbox(root, width=80, height=15)
         self.listbox.pack(pady=10)
         #ttk.Button(root, text="- comprimir pdf", command=self.compress_pdfs).pack(pady=10)
@@ -87,6 +88,12 @@ class PDFApp:
             with open(output_path,"wb") as f:
                 writer.write(f)
             messagebox.showinfo("Exito", "Archivo dividido guardado")
+
+    def clear_files(self):
+        self.pdf_files=[]
+        self.listbox.delete(0, tk.END)
+
+
 
 if __name__ == "__main__":
     root =tk.Tk()
