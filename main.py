@@ -14,6 +14,7 @@ class PDFApp:
         ttk.Button(root, text="+ agregar pdf", command=self.select_pdfs).pack(pady=10)
         ttk.Button(root, text="unir pdf", command=self.merge_pdfs).pack(pady=10)
         ttk.Button(root, text="dividir pdf", command=self.split_pdf).pack(pady=10)
+        ttk.Button(root, text="dividir pdf por paginas", command=self.split_pdf_perpage).pack(pady=10)
         self.listbox = tk.Listbox(root, width=80, height=15)
         self.listbox.pack(pady=10)
         #ttk.Button(root, text="- comprimir pdf", command=self.compress_pdfs).pack(pady=10)
@@ -62,6 +63,30 @@ class PDFApp:
                 writer.write(f)
             messagebox.showinfo("Exito", "Archivo dividido guardado")
         
+    def split_pdf_perpage(self):
+        if not self.pdf_files:
+            messagebox.showwarning("Advertencia", "Tienes que seleccionar un pdf")
+            return
+        pdf_path=self.pdf_files[0]
+        reader=PdfReader(pdf_path)
+        total_pages=len(reader.pages)
+        rango=tk.simpledialog.askstring("Dividir", f"Total de paginas:{total_pages}\n Ingresa las paginas a conservar (ej.1-3-4)")
+        if not rango:
+            return
+        paginasselec = map(int, rango.split("-"))
+        pagsselect = list(paginasselec)
+        print(len(pagsselect))
+        writer=PdfWriter()
+        for i in range(0, (len(pagsselect))):
+            print(i)
+            print(pagsselect[i])
+            writer.add_page(reader.pages[(pagsselect[i]-1)])
+        output_path = filedialog.asksaveasfilename(defaultextension=".pdf")
+
+        if output_path:
+            with open(output_path,"wb") as f:
+                writer.write(f)
+            messagebox.showinfo("Exito", "Archivo dividido guardado")
 
 if __name__ == "__main__":
     root =tk.Tk()
