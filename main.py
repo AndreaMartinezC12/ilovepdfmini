@@ -16,6 +16,10 @@ class PDFApp:
         ttk.Button(root, text="dividir pdf", command=self.split_pdf).pack(pady=10)
         ttk.Button(root, text="dividir pdf por paginas", command=self.split_pdf_perpage).pack(pady=10)
         ttk.Button(root, text="clear pdf selection", command=self.clear_files).pack(pady=10)
+
+        ttk.Button(root, text="^ subir orden de pdf", command=self.pdf_up).pack(pady=10)
+        ttk.Button(root, text="v bajar orden de pdf", command=self.pdf_down).pack(pady=10)
+
         self.listbox = tk.Listbox(root, width=80, height=15)
         self.listbox.pack(pady=10)
         #ttk.Button(root, text="- comprimir pdf", command=self.compress_pdfs).pack(pady=10)
@@ -92,6 +96,30 @@ class PDFApp:
     def clear_files(self):
         self.pdf_files=[]
         self.listbox.delete(0, tk.END)
+
+    def pdf_up(self):
+        seleccion=self.listbox.curselection()
+        if not seleccion:
+            return
+        seleccion = seleccion[0]
+        self.pdf_files[seleccion-1],self.pdf_files[seleccion] = self.pdf_files[seleccion], self.pdf_files[seleccion - 1]
+        self.listbox.selection_set(seleccion-1)
+
+        self.listbox.delete(0, tk.END)
+        for p in self.pdf_files:
+            self.listbox.insert(tk.END, p)
+
+    def pdf_down(self):
+        seleccion=self.listbox.curselection()
+        if not seleccion:
+            return
+        seleccion = seleccion[0]
+        self.pdf_files[seleccion+1],self.pdf_files[seleccion] = self.pdf_files[seleccion], self.pdf_files[seleccion + 1]
+        self.listbox.selection_set(seleccion+1)
+
+        self.listbox.delete(0, tk.END)
+        for p in self.pdf_files:
+            self.listbox.insert(tk.END, p)
 
 
 
